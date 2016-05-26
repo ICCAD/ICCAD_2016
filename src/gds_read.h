@@ -14,7 +14,7 @@
 using namespace std;
 
 
-void converter (std::vector< gds_data > *gds_datas, std::vector<int> *,const char *);
+void converter (vector< gds_data > *gds_datas, vector<int> *,const char *);
 
 void writegds(const char *,vector<rect>,int layer, int , int , int);
 

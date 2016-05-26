@@ -1,15 +1,6 @@
-#include <iostream>
-#include <fstream>
-#include <cmath>
-#include <vector>
-
 #include "gds_read.h"
 #include "data_structure.h"
 
-#include <algorithm>
-#include <ctime>
-#include <cstdio>
-using namespace std;
 
 ifstream::pos_type getPointer;
 int h;extern int u;
@@ -91,6 +82,7 @@ void converter (vector< gds_data > *gds_datas, vector<int> *layer_list,const cha
 				temp_layer = Int_2u( str2[0] , str2[1] ); //2_data_bytes=layer
                 if (!check_layer(layer_list, temp_layer)) {
                     layer_list->push_back(temp_layer);
+					cout << "temp layer  : " << temp_layer << endl;
                 }
                 temp_gds_data.layer=temp_layer;
 				//fout <<" " << ID_str << val << " " ;
