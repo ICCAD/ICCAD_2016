@@ -83,6 +83,7 @@ void converter (vector< gds_data > *gds_datas, vector<int> *layer_list,const cha
                 if (!check_layer(layer_list, temp_layer)) {
                     layer_list->push_back(temp_layer);
 					cout << "temp layer  : " << temp_layer << endl;
+					cout << (int)str2[0] << " " << (int)str2[1] << endl;
                 }
                 temp_gds_data.layer=temp_layer;
 				//fout <<" " << ID_str << val << " " ;
@@ -334,6 +335,7 @@ int Numb_Bytes( int hi, int lo )
 unsigned Int_2u( unsigned hi, unsigned lo )
 {
 	int numb ;
+	if ( (int)hi <0 ) hi = hi+256; if ( (int)lo <0 ) lo = lo+256;
 	numb =(hi<<8) + lo; // //fout <<hi<<" "<<lo<<""<<numb<< " \n" ;
 	return numb;
 }
