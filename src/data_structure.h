@@ -59,5 +59,18 @@ struct PTR_vase{
 	points point;
 };
 
+/*class marker {
+	public:
+		marker(int w, int h, int I) { width = w; height = h; ID = I;}
+		marker() { ID = 0;}
+		insertPolygon(int x0, int x1, int y0, int y1) {childPolygon.insert(rect())}
+		
+	private:
+		int width;
+		int height;
+		int ID;
+		vector<rect> childPolygon;
+		
+};*/
 
 #endif

@@ -2,6 +2,7 @@
 #include "data_structure.h"
 
 
+
 ifstream::pos_type getPointer;
 int h;extern int u;
 extern double chip_hx,chip_hy;
@@ -13,6 +14,13 @@ int Int_Sign4( int first, int second, int third, int forth ) ;
 double Real_8( int X0, int X1, int X2, int X3,int X4, int X5, int X6, int X7 );
 bool check_layer(vector<int> *layer_list, int layer);
 string CodeID( int hi, int lo );
+int pow(int a, int b) {
+	int ans = 1;
+	for(int i = 0; i < b; i++){
+		ans = ans*a;
+	}
+	return ans;
+}
 char str2[100000];
 const char *fname;
 void converter (vector< gds_data > *gds_datas, vector<int> *layer_list,const char *inputfile)
