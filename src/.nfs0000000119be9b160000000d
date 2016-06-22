@@ -7,7 +7,7 @@
 #include "marker.h"
 using namespace std;
 
-bool ACC(marker A, marker B, double e){
+bool ACC(marker A, marker B, double e){	// Perform ACC
 	double Intersection = 0;
 	for(int i = 0; i < A.countPolygon(); i++){
 		for(int j = 0; j < B.countPolygon(); j++){ //Calculate area of intersection by idiot method
@@ -26,9 +26,7 @@ bool ACC(marker A, marker B, double e){
 			}else;
 		}
 	}
-	cout << "Intersection: " << Intersection << endl;
 	double XOR = double(A.areaPolygon()) + double(B.areaPolygon()) - 2*Intersection;
-	cout << "XOR: " << XOR << endl;
 	if(((double(A.areaPolygon())-XOR)/double(A.areaPolygon())) >= e)
 		return true;
 	else if(((double(B.areaPolygon())-XOR)/double(B.areaPolygon())) >= e)
@@ -37,7 +35,7 @@ bool ACC(marker A, marker B, double e){
 		return false;
 }
 
-bool ECC(marker markerA,marker markerB,int constraint){
+bool ECC(marker markerA,marker markerB,int constraint){	// Perform ECC
 	list<Line> linesH;
 	list<Line> linesV;
 	list<Line> linesB;

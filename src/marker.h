@@ -9,6 +9,7 @@ using namespace std;
 
 class polygon {
 	public:
+	
 		polygon(int x0, int x1, int y0, int y1) { xLeft = x0; xRight = x1; yDown = y0; yUp = y1; }
 		int xLeft,xRight,yDown,yUp;
 		
@@ -32,8 +33,6 @@ class marker { //Marker containing all polygon inside it
 		marker() { ID = 0;}
 		void insertPolygon(int x0, int x1, int y0, int y1)
 		{
-			//cout << "Y0 " << y0 << endl;
-			//cout << "BORDER " << (centerY-(height/2)) << endl;
 			if(x0 < (centerX-(width/2)))
 				x0 = 0;
 			else
@@ -50,7 +49,6 @@ class marker { //Marker containing all polygon inside it
 				y1 = height;
 			else
 				y1-=(centerY-(height/2));
-			cout << "Check: " << x0 << "/" << x1 << "/" << y0 << "/" << y1 << endl;
 			childPolygon.push_back(polygon(x0,x1,y0,y1));
 		}
 		int countPolygon() { return childPolygon.size(); }

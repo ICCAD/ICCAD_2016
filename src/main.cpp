@@ -24,14 +24,17 @@ int main(int argc, char **argv){
 	vector<int> layer_list;
 	vector <gds_data> gds_datas;
 	vector <marker> markers;	//We store all markers here.
-	vector <polygon> polygons;	//We store all markers here.
+	vector <polygon> polygons;	//We store all polygons here.
 	vector< vector<rect> > rectangles(2);
-	vector < vector<bool> > CCresult;
+	vector < vector<bool> > CCresult;	//We store result before clustering here. 
 	int CCflag; // 0: ECC, 1: ACC 
+	
+	//User defined parameter
 	int markerHeight, markerWidth;
 	double ACCconstraint;
 	int ECCconstraint;
 	
+	//Read in parameter
 	markerWidth = atoi(argv[3]);
 	markerHeight = atoi(argv[4]);
 	if(strcmp(argv[2],"ECC") == 0){
@@ -59,10 +62,8 @@ int main(int argc, char **argv){
 	RTree<int, int, 2, float> * tree = new RTree<int, int, 2, float>;
 	int minp[2],maxp[2];
 	
-	cout << gds_datas.size() << endl;
-	
 	int polygonID = 0;
-	for( int i=0;i<gds_datas.size();++i ){
+	for( int i=0;i<gds_datas.size();++i ){	// Read polygons
 		if(gds_datas[i].layer == 1000){
 			minp[0] = gds_datas[i].points_list[0].x;
 			minp[1] = gds_datas[i].points_list[0].y;
@@ -78,7 +79,6 @@ int main(int argc, char **argv){
 				if(maxp[1] < gds_datas[i].points_list[j].y)
 					maxp[1] = gds_datas[i].points_list[j].y;
 			}
-			cout << "Polygon " << polygonID << "@ " << minp[0] << "/" << minp[1] << "/" << maxp[0] << "/" << maxp[1] << endl; 
 			tree->Insert(minp, maxp, polygonID);
 			polygons.push_back(polygon(minp[0],maxp[0],minp[1],maxp[1]));
 			polygonID++;
@@ -87,7 +87,7 @@ int main(int argc, char **argv){
 	
 	int markerID = 0;
 	vector <int> t_list;
-	for( int i=0;i<gds_datas.size();++i ){
+	for( int i=0;i<gds_datas.size();++i ){	// Read markers
 		if(gds_datas[i].layer == 10000){
 			minp[0] = gds_datas[i].points_list[0].x;
 			minp[1] = gds_datas[i].points_list[0].y;
@@ -109,15 +109,11 @@ int main(int argc, char **argv){
 			minp[1] = centerY-markerHeight/2;
 			maxp[0] = centerX+markerWidth/2;
 			maxp[1] = centerY+markerHeight/2;
-			//cout << "Marker " << i << "@ " << minp[0] << "/" << minp[1] << "/" << maxp[0] << "/" << maxp[1] << endl;
 			markers.push_back(marker(markerWidth,markerHeight,centerX,centerY,markerID));
 			tree->Search(minp, maxp, &t_list);
-			//cout << "Element " << t_list.size() << endl;
 			for( int j=0;j<t_list.size();++j ){
 				markers[markerID].insertPolygon(polygons[t_list[j]].xLeft,polygons[t_list[j]].xRight,polygons[t_list[j]].yDown,polygons[t_list[j]].yUp); 
-				cout << t_list[j] << endl;
 			}
-			//cout << markers[markerID].areaPolygon() << endl;
 			t_list.clear();
 			markerID++;
 		}
@@ -126,7 +122,6 @@ int main(int argc, char **argv){
 	CCresult.resize(markers.size());
 	for(int k=0; k < markers.size(); k++){
 		for(int l=0; l < markers.size(); l++){
-			cout << k << " with " << l << endl;
 			if(CCflag == 1)
 				CCresult[k].push_back(ACC(markers[k],markers[l],ACCconstraint));
 			else
