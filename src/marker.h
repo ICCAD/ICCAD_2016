@@ -14,6 +14,14 @@ class polygon {
 		
 };
 
+class Line{
+	public:
+		
+		
+		Line(int _x0, int _y0, int _x1, int _y1) { x0 = _x0; y0 = _y0; x1 = _x1; y1 = _y1; }
+		int x0,x1,y0,y1;
+};
+
 class marker { //Marker containing all polygon inside it
 	public:
 		marker(int w, int h, int X, int Y, int I) 

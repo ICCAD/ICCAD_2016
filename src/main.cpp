@@ -6,17 +6,18 @@
 #include "gds_read.h"
 #include "RTree.h"
 #include "marker.h"
-#include "ACC.h"
+#include "CC.h"
 
 using namespace std;
 
 void help_message() {
-    cout << "usage: ./bin/ICCAD_2016 <input_gds_file> <marker_width> <marker_height> <constrain_number>" << endl;
+    cout << "usage: ./bin/ICCAD_2016 <input_gds_file> <constrained_method> <marker_width> <marker_height> <constrain_number>" << endl;
+	cout << "for <constrained_method>, input either ECC or ACC to decide." << endl;
 }
 
 int main(int argc, char **argv){
 	
-	if(argc != 	5) {
+	if(argc != 	6) {
        help_message();
        return 0;
     }
@@ -26,12 +27,30 @@ int main(int argc, char **argv){
 	vector <polygon> polygons;	//We store all markers here.
 	vector< vector<rect> > rectangles(2);
 	vector < vector<bool> > CCresult;
+	int CCflag; // 0: ECC, 1: ACC 
 	int markerHeight, markerWidth;
-	double constraint;
+	double ACCconstraint;
+	int ECCconstraint;
 	
-	markerWidth = atoi(argv[2]);
-	markerHeight = atoi(argv[3]);
-	constraint = atof(argv[4]);
+	markerWidth = atoi(argv[3]);
+	markerHeight = atoi(argv[4]);
+	if(strcmp(argv[2],"ECC") == 0){
+		CCflag = 0;
+		cout << "Choose ECC to clustering." << endl;
+		ECCconstraint = atoi(argv[5]);
+	}else if(strcmp(argv[2],"ACC") == 0){
+		CCflag = 1;
+		cout << "Choose ACC to clustering." << endl;
+		if(atof(argv[5]) > 1){
+			cout << "Input parameter must between 0 and 1 in ACC. Aborted." << endl;
+			return 0;
+		}else
+			ACCconstraint =atof(argv[5]);
+	}else{
+		cout << "Please choose either ACC or ECC. Aborted." << endl;
+		return 0;
+	}
+		
 	//read gds file
     converter(&gds_datas,&layer_list, argv[1]);
     sort(layer_list.begin(), layer_list.end(), comp_layer);
@@ -104,13 +123,18 @@ int main(int argc, char **argv){
 		}
 	}
 	
-	vector < vector<bool> > CCresult;
 	CCresult.resize(markers.size());
 	for(int k=0; k < markers.size(); k++){
 		for(int l=0; l < markers.size(); l++){
-			CCresult[k].push_back(ACC(markers[k],markers[l],constraint));
+			cout << k << " with " << l << endl;
+			if(CCflag == 1)
+				CCresult[k].push_back(ACC(markers[k],markers[l],ACCconstraint));
+			else
+				CCresult[k].push_back(ECC(markers[k],markers[l],ECCconstraint));
 		}
 	}
+	
+	// Result Checker
 	for(int k=0; k < markers.size(); k++){
 		for(int l=0; l < markers.size(); l++){
 			cout << CCresult[k][l] << " ";
@@ -118,9 +142,6 @@ int main(int argc, char **argv){
 		cout << endl;
 	}
 	
-	
-	
-	cout << "good start !" << endl;
 	
 	return 0;
 }
