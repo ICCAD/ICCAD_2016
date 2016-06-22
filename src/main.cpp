@@ -155,6 +155,7 @@ int main(int argc, char **argv){
 	}
 	bk.start_find_MC(start_P, &v);
 	//bk.cout_clique();
+	cout << " find MC finish !!" << endl;
 	bk.find_final_clique(final_clique, markers.size());
 	for( int i=0;i<final_clique.size();++i ){
 		for( int j=0;j<final_clique[i].size();++j ){

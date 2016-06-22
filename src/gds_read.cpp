@@ -595,3 +595,193 @@ bool check_layer(vector<int> *layer_list, int layer) {
     return false;
 }
 
+void writegds(const char *outputfile,vector<rect> rectdata,int layer, int xbound, int ybound, int baselayer)
+{
+    if (layer==0) {
+        
+        time_t *now;
+        struct tm *date;
+        
+        now  = (time_t *)    malloc( sizeof( time_t ) );
+        date = (struct tm *) malloc( sizeof( struct tm ) );
+        
+        time( now );
+        date = localtime( now );
+
+        
+        ofstream fout (outputfile, ios::out|ios::binary);
+        str2[0]=Int_Conv(6, 1);
+        str2[1]=Int_Conv(6, 0);
+        fout.write(str2, 2);
+        str2[0]=0;
+        str2[1]=2;
+        fout.write(str2, 2);
+        str2[0]=Int_Conv(600, 1);
+        str2[1]=Int_Conv(600, 0);
+        fout.write(str2, 2);// HEADER Release # 600
+        str2[0]=Int_Conv(28, 1);
+        str2[1]=Int_Conv(28, 0);
+        fout.write(str2, 2);
+        str2[0]=1;
+        str2[1]=2;
+        fout.write(str2, 2);//BGNLIB
+        str2[0]=Int_Conv(1900 + date->tm_year,1);
+        str2[1]=Int_Conv(1900 + date->tm_year,0);
+        //fout.write(str2, 2);
+        str2[2]=Int_Conv(1 + date->tm_mon,1);
+        str2[3]=Int_Conv(1 + date->tm_mon,0);
+        //fout.write(str2, 2);
+        str2[4]=Int_Conv(date->tm_mday,1);
+        str2[5]=Int_Conv(date->tm_mday,0);
+        //fout.write(str2, 2);
+        str2[6]=Int_Conv(date->tm_hour,1);
+        str2[7]=Int_Conv(date->tm_hour,0);
+        //fout.write(str2, 2);
+        str2[8]=Int_Conv(date->tm_min,1);
+        str2[9]=Int_Conv(date->tm_min,0);
+        //fout.write(str2, 2);
+        str2[10]=Int_Conv(date->tm_sec,1);
+        str2[11]=Int_Conv(date->tm_sec,0);
+        fout.write(str2, 12);
+        fout.write(str2, 12);//time*2
+        str2[0]=Int_Conv(10, 1);
+        str2[1]=Int_Conv(10, 0);
+        fout.write(str2, 2);
+        str2[0]=2;
+        str2[1]=6;
+        fout.write(str2, 2);
+        str2[0]='d';
+        str2[1]='r';
+        str2[2]='c';
+        str2[3]='.';
+        str2[4]='d';
+        str2[5]='b';
+        fout.write(str2, 6);//LIBNAME = drc.db
+        str2[0]=Int_Conv(20, 1);
+        str2[1]=Int_Conv(20, 0);
+        fout.write(str2, 2);
+        str2[0]=3;
+        str2[1]=5;
+        fout.write(str2, 2);
+        str2[0]=62;
+        str2[1]=65;
+        str2[2]=-119+256;
+        str2[3]=55;
+        str2[4]=75;
+        str2[5]=-58+256;
+        str2[6]=-89+256;
+        str2[7]=-16+256;
+        str2[8]=57;
+        str2[9]=68;
+        str2[10]=-72+256;
+        str2[11]=47;
+        str2[12]=-96+256;
+        str2[13]=-101+256;
+        str2[14]=90;
+        str2[15]=80;
+        fout.write(str2, 16);//UNITS = 0.001 1e-09
+        str2[0]=Int_Conv(28, 1);
+        str2[1]=Int_Conv(28, 0);
+        fout.write(str2, 2);
+        str2[0]=5;
+        str2[1]=2;
+        fout.write(str2, 2);//BGSTR
+        str2[0]=Int_Conv(1900 + date->tm_year,1);
+        str2[1]=Int_Conv(1900 + date->tm_year,0);
+        //fout.write(str2, 2);
+        str2[2]=Int_Conv(1 + date->tm_mon,1);
+        str2[3]=Int_Conv(1 + date->tm_mon,0);
+        //fout.write(str2, 2);
+        str2[4]=Int_Conv(date->tm_mday,1);
+        str2[5]=Int_Conv(date->tm_mday,0);
+        //fout.write(str2, 2);
+        str2[6]=Int_Conv(date->tm_hour,1);
+        str2[7]=Int_Conv(date->tm_hour,0);
+        //fout.write(str2, 2);
+        str2[8]=Int_Conv(date->tm_min,1);
+        str2[9]=Int_Conv(date->tm_min,0);
+        //fout.write(str2, 2);
+        str2[10]=Int_Conv(date->tm_sec,1);
+        str2[11]=Int_Conv(date->tm_sec,0);
+        fout.write(str2, 12);
+        fout.write(str2, 12);//time*2
+        str2[0]=Int_Conv(12, 1);
+        str2[1]=Int_Conv(12, 0);
+        fout.write(str2, 2);
+        str2[0]=6;
+        str2[1]=6;
+        fout.write(str2, 2);
+        str2[0]=84;
+        str2[1]=79;
+        str2[2]=80;
+        str2[3]=67;
+        str2[4]=69;
+        str2[5]=76;
+        str2[6]=76;
+        str2[7]=0;
+        fout.write(str2, 8);//STRNAME = TOPCELL
+        fout.close();
+    }
+    ofstream fout (outputfile, ios::out|ios::binary|ios::app);
+    
+	for (int k=0; k<rectdata.size(); k++) { //until area fit
+		str2[0]=Int_Conv(4, 1);
+		str2[1]=Int_Conv(4, 0);
+		fout.write(str2, 2);
+		str2[0]=8;
+		str2[1]=0;
+		fout.write(str2, 2);//BOUNDARY
+		str2[0]=Int_Conv(6, 1);
+		str2[1]=Int_Conv(6, 0);
+		fout.write(str2, 2);
+		str2[0]=13;
+		str2[1]=2;
+		fout.write(str2, 2);
+		str2[0]=Int_Conv(layer+baselayer, 1);
+		str2[1]=Int_Conv(layer+baselayer, 0);
+		fout.write(str2, 2);//LAYER
+		str2[0]=Int_Conv(6, 1);
+		str2[1]=Int_Conv(6, 0);
+		fout.write(str2, 2);
+		str2[0]=14;
+		str2[1]=2;
+		fout.write(str2, 2);
+		str2[0]=Int_Conv(0, 1);
+		str2[1]=Int_Conv(0, 0);
+		fout.write(str2, 2);//DATATYPE
+		str2[0]=Int_Conv(44, 1);
+		str2[1]=Int_Conv(44, 0);
+		fout.write(str2, 2);
+		str2[0]=16;
+		str2[1]=3;
+		fout.write(str2, 2);//XY=
+		points rectpoints[5];
+		rectpoints[0]=rectdata[k].minp;
+		rectpoints[1].x=rectdata[k].minp.x;
+		rectpoints[1].y=rectdata[k].maxp.y;
+		rectpoints[2]=rectdata[k].maxp;
+		rectpoints[3].x=rectdata[k].maxp.x;
+		rectpoints[3].y=rectdata[k].minp.y;
+		rectpoints[4]=rectdata[k].minp;
+		for (int l=0; l<5; l++) {
+			str2[8*l+0]=Int_Conv(rectpoints[l].x,3);
+			str2[8*l+1]=Int_Conv(rectpoints[l].x,2);
+			str2[8*l+2]=Int_Conv(rectpoints[l].x,1);
+			str2[8*l+3]=Int_Conv(rectpoints[l].x,0);
+			
+			str2[8*l+4]=Int_Conv(rectpoints[l].y,3);
+			str2[8*l+5]=Int_Conv(rectpoints[l].y,2);
+			str2[8*l+6]=Int_Conv(rectpoints[l].y,1);
+			str2[8*l+7]=Int_Conv(rectpoints[l].y,0);
+		}
+		fout.write(str2, 40);
+		str2[0]=Int_Conv(4, 1);
+		str2[1]=Int_Conv(4, 0);
+		fout.write(str2, 2);
+		str2[0]=17;
+		str2[1]=0;
+		fout.write(str2, 2);//ENDL
+	}
+    //cout<<temparea<<endl;
+    fout.close();
+};

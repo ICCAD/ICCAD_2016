@@ -26,7 +26,7 @@ bool comp_pointsyy(points aa, points bb);
 
 bool comp_layer(int aa, int bb);
 
-
+void writegds(const char *,vector<rect>,int layer, int , int , int);
 
 
 
