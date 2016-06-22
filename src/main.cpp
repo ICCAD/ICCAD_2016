@@ -1,12 +1,15 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <string.h>
+#include <stdio.h>
 
 #include "data_structure.h"
 #include "gds_read.h"
 #include "RTree.h"
 #include "marker.h"
 #include "CC.h"
+#include "Bron_Kerbosch.h"
 
 using namespace std;
 
@@ -130,12 +133,32 @@ int main(int argc, char **argv){
 	}
 	
 	// Result Checker
+	vector <int> start_P(markers.size());
+	vector <vertex> v(markers.size());
+	
+	vector < vector <int> > final_clique;
+	
+	//vector <clique *> v_clique;
+	bron_kerbosch bk;
+	for( int i=0;i<markers.size();i++ ){
+		start_P[i] = i;
+	}
+	
 	for(int k=0; k < markers.size(); k++){
 		for(int l=0; l < markers.size(); l++){
 			cout << CCresult[k][l] << " ";
+			if(CCresult[k][l] && k != l){
+				v[k].neightbor.push_back(l);
+			}
 		}
 		cout << endl;
 	}
+	bk.start_find_MC(start_P, &v);
+	bk.cout_clique();
+	bk.find_final_clique(final_clique, markers.size());
+	cout << markers.size() << " " << bk.maximal_clique.size() << endl;
+	
+	
 	
 	
 	return 0;
