@@ -14,13 +14,6 @@ class polygon {
 		
 };
 
-class rect_marker { //Rectangle in markers
-	public:
-		rect_marker(int x0, int x1, int y0, int y1) { xLeft = x0; xRight = x1; yDown = y0; yUp = y1; }
-	private:
-		int xLeft,xRight,yDown,yUp;
-};
-
 class marker { //Marker containing all polygon inside it
 	public:
 		marker(int w, int h, int X, int Y, int I) 
@@ -50,8 +43,10 @@ class marker { //Marker containing all polygon inside it
 			else
 				y1-=(centerY-(height/2));
 			//cout << "Check: " << x0 << "/" << x1 << "/" << y0 << "/" << y1 << endl;
-			childPolygon.push_back(rect_marker(x0,x1,y0,y1));
+			childPolygon.push_back(polygon(x0,x1,y0,y1));
 		}
+		int countPolygon() { return childPolygon.size(); }
+		polygon returnPolygon(int i) { return childPolygon[i]; }
 		
 	private:
 		int width;	//This should be same among all 
@@ -59,7 +54,7 @@ class marker { //Marker containing all polygon inside it
 		int centerX;
 		int centerY;
 		int ID;
-		vector<rect_marker> childPolygon;
+		vector<polygon> childPolygon;
 		
 };
 

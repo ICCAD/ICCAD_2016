@@ -94,7 +94,7 @@ int main(int argc, char **argv){
 			//cout << "Element " << t_list.size() << endl;
 			for( int j=0;j<t_list.size();++j ){
 				markers[markerID].insertPolygon(polygons[t_list[j]].xLeft,polygons[t_list[j]].xRight,polygons[t_list[j]].yDown,polygons[t_list[j]].yUp); 
-				cout << t_list[j] << endl;
+				//cout << t_list[j] << endl;
 			}
 			t_list.clear();
 			markerID++;
