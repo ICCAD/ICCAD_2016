@@ -199,14 +199,14 @@ void bron_kerbosch::find_final_clique(vector < vector <int> > &final_clique, int
 	vector <int> used(v_size, 0);
 	int init_v = v_size;
 	while(init_v > 0){
-		cout << init_v << "   33333" << endl;
-		getchar();
+		//cout << init_v << "   33333" << endl;
+		//getchar();
 		int max_v = 0, max_clique;
 		for( int i=0;i<maximal_clique.size();++i ){
 			int temp_v = 0;
-			cout << "0" << endl;
+			//cout << "0" << endl;
 			for( int j=0;j<maximal_clique[i].size();++j ){
-				cout << maximal_clique[i][j] << endl;
+				//cout << maximal_clique[i][j] << endl;
 				if(!used[maximal_clique[i][j]]){
 					temp_v ++;
 				}

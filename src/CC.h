@@ -106,12 +106,18 @@ bool ECC(marker markerA,marker markerB,int constraint){	// Perform ECC
 		}
 	}
 	for(std::list<Line>::iterator it = linesV.begin() ; it!=linesV.end(); ++it){
-		if(it->x0 == it->x1 && it->y0 == it->y1)
-			linesV.erase(it);
+		if(it->x0 == it->x1 && it->y0 == it->y1){
+			linesH.erase(it);
+			--it;
+		}
+			
 	}
 	for(std::list<Line>::iterator it = linesH.begin() ; it!=linesH.end(); ++it){
-		if(it->x0 == it->x1 && it->y0 == it->y1)
-			linesH.erase(it);
+		if(it->x0 == it->x1 && it->y0 == it->y1){
+			linesV.erase(it);
+			--it;
+		}
+			
 	}
 
 	if(linesH.size()==0 && linesH.size()==0)

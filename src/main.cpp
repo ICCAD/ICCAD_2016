@@ -2,7 +2,7 @@
 #include <fstream>
 #include <iomanip>
 #include <string.h>
-#include <stdio.h>
+
 
 #include "data_structure.h"
 #include "gds_read.h"
@@ -128,7 +128,7 @@ int main(int argc, char **argv){
 			if(CCflag == 1)
 				CCresult[k].push_back(ACC(markers[k],markers[l],ACCconstraint));
 			else
-				CCresult[k].push_back(ECC(markers[k],markers[l],ECCconstraint));
+				CCresult[k].push_back(ECC(markers[k],markers[l],ECCconstraint)&&ECC(markers[l],markers[k],ECCconstraint));
 		}
 	}
 	
@@ -154,9 +154,15 @@ int main(int argc, char **argv){
 		cout << endl;
 	}
 	bk.start_find_MC(start_P, &v);
-	bk.cout_clique();
+	//bk.cout_clique();
 	bk.find_final_clique(final_clique, markers.size());
-	cout << markers.size() << " " << bk.maximal_clique.size() << endl;
+	for( int i=0;i<final_clique.size();++i ){
+		for( int j=0;j<final_clique[i].size();++j ){
+			cout << final_clique[i][j] << " " ;
+		}
+		cout << endl;
+	}
+	//cout << markers.size() << " " << bk.maximal_clique.size() << endl;
 	
 	
 	
