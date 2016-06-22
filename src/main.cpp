@@ -6,6 +6,7 @@
 #include "gds_read.h"
 #include "RTree.h"
 #include "marker.h"
+#include "ACC.h"
 
 using namespace std;
 
@@ -24,6 +25,7 @@ int main(int argc, char **argv){
 	vector <marker> markers;	//We store all markers here.
 	vector <polygon> polygons;	//We store all markers here.
 	vector< vector<rect> > rectangles(2);
+	vector < vector<bool> > CCresult;
 	int markerHeight, markerWidth;
 	double constraint;
 	
@@ -94,13 +96,27 @@ int main(int argc, char **argv){
 			//cout << "Element " << t_list.size() << endl;
 			for( int j=0;j<t_list.size();++j ){
 				markers[markerID].insertPolygon(polygons[t_list[j]].xLeft,polygons[t_list[j]].xRight,polygons[t_list[j]].yDown,polygons[t_list[j]].yUp); 
-				//cout << t_list[j] << endl;
+				cout << t_list[j] << endl;
 			}
+			//cout << markers[markerID].areaPolygon() << endl;
 			t_list.clear();
 			markerID++;
 		}
 	}
-	 
+	
+	vector < vector<bool> > CCresult;
+	CCresult.resize(markers.size());
+	for(int k=0; k < markers.size(); k++){
+		for(int l=0; l < markers.size(); l++){
+			CCresult[k].push_back(ACC(markers[k],markers[l],constraint));
+		}
+	}
+	for(int k=0; k < markers.size(); k++){
+		for(int l=0; l < markers.size(); l++){
+			cout << CCresult[k][l] << " ";
+		}
+		cout << endl;
+	}
 	
 	
 	

@@ -42,11 +42,19 @@ class marker { //Marker containing all polygon inside it
 				y1 = height;
 			else
 				y1-=(centerY-(height/2));
-			//cout << "Check: " << x0 << "/" << x1 << "/" << y0 << "/" << y1 << endl;
+			cout << "Check: " << x0 << "/" << x1 << "/" << y0 << "/" << y1 << endl;
 			childPolygon.push_back(polygon(x0,x1,y0,y1));
 		}
 		int countPolygon() { return childPolygon.size(); }
 		polygon returnPolygon(int i) { return childPolygon[i]; }
+		int areaPolygon() 
+		{
+			int result = 0;
+			for(int i = 0;i < countPolygon(); i++){
+				result+=((childPolygon[i].xRight-childPolygon[i].xLeft)*(childPolygon[i].yUp-childPolygon[i].yDown));
+			}
+			return result;
+		}
 		
 	private:
 		int width;	//This should be same among all 
