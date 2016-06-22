@@ -11,19 +11,27 @@ bool ACC(marker A, marker B, double e){	// Perform ACC
 	double Intersection = 0;
 	for(int i = 0; i < A.countPolygon(); i++){
 		for(int j = 0; j < B.countPolygon(); j++){ //Calculate area of intersection by idiot method
-			if((A.returnPolygon(i).xLeft <= B.returnPolygon(j).xRight)&&(A.returnPolygon(i).xLeft >= B.returnPolygon(j).xLeft)&&
-			(A.returnPolygon(i).yUp <= B.returnPolygon(j).yUp)&&(A.returnPolygon(i).yUp >= B.returnPolygon(j).yDown)){
-				Intersection+= ((B.returnPolygon(j).xRight - A.returnPolygon(i).xLeft)*(A.returnPolygon(i).yUp - B.returnPolygon(j).yDown));
-			}else if((A.returnPolygon(i).xRight <= B.returnPolygon(j).xRight)&&(A.returnPolygon(i).xRight >= B.returnPolygon(j).xLeft)&&
-			(A.returnPolygon(i).yUp <= B.returnPolygon(j).yUp)&&(A.returnPolygon(i).yUp >= B.returnPolygon(j).yDown)){
-				Intersection+= ((A.returnPolygon(i).xRight - B.returnPolygon(j).xLeft)*(A.returnPolygon(i).yUp - B.returnPolygon(j).yDown));
-			}else if((A.returnPolygon(i).xLeft <= B.returnPolygon(j).xRight)&&(A.returnPolygon(i).xLeft >= B.returnPolygon(j).xLeft)&&
-			(A.returnPolygon(i).yDown <= B.returnPolygon(j).yUp)&&(A.returnPolygon(i).yDown >= B.returnPolygon(j).yDown)){
-				Intersection+= ((B.returnPolygon(j).xRight - A.returnPolygon(i).xLeft)*(B.returnPolygon(j).yUp - A.returnPolygon(i).yDown));
-			}else if((A.returnPolygon(i).xRight <= B.returnPolygon(j).xRight)&&(A.returnPolygon(i).xRight >= B.returnPolygon(j).xLeft)&&
-			(A.returnPolygon(i).yDown <= B.returnPolygon(j).yUp)&&(A.returnPolygon(i).yDown >= B.returnPolygon(j).yDown)){
-				Intersection+= ((A.returnPolygon(i).xRight - B.returnPolygon(j).xLeft)*(B.returnPolygon(j).yUp - A.returnPolygon(i).yDown));
-			}else;
+			int rLeft, rRight, rUp, rDown;
+			if(A.returnPolygon(i).xLeft > B.returnPolygon(j).xLeft)
+				rLeft = A.returnPolygon(i).xLeft;
+			else
+				rLeft = B.returnPolygon(j).xLeft;
+			if(A.returnPolygon(i).xRight < B.returnPolygon(j).xRight)
+				rRight = A.returnPolygon(i).xRight;
+			else
+				rRight = B.returnPolygon(j).xRight;
+			if(A.returnPolygon(i).yUp < B.returnPolygon(j).yUp)
+				rUp = A.returnPolygon(i).yUp;
+			else
+				rUp = B.returnPolygon(j).yUp;
+			if(A.returnPolygon(i).yDown > B.returnPolygon(j).yDown)
+				rDown = A.returnPolygon(i).yDown;
+			else
+				rDown = B.returnPolygon(j).yDown;
+			if(rLeft < rRight && rUp > rDown){
+				Intersection+= ((rRight - rLeft)*(rUp - rDown));
+				cout << ((rRight - rLeft)*(rUp - rDown)) << endl;
+			}
 		}
 	}
 	double XOR = double(A.areaPolygon()) + double(B.areaPolygon()) - 2*Intersection;
