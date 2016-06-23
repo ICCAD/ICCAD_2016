@@ -14,12 +14,12 @@
 using namespace std;
 
 void help_message() {
-    cout << "usage: ./bin/ICCAD_2016 <input_gds_file>  <marker_width> <marker_height> <ECC constrain_number> <ACC constrain_number>" << endl;
+    cout << "usage: ./bin/ICCAD_2016 <input_gds_file>  <marker_width> <marker_height> <ECC constrain_number> <ACC constrain_number> <output_gds_file>" << endl;
 	//cout << "for <constrained_method>, input either ECC or ACC to decide." << endl;
 }
 int main(int argc, char **argv){
 	
-	if(argc != 	6) {
+	if(argc != 	7) {
        help_message();
        return 0;
     }
@@ -178,10 +178,10 @@ int main(int argc, char **argv){
 										markers[final_clique[i][j]].centerY + markers[final_clique[i][j]].height/2));
 		}
 
-		writegds("out.gds",rectdata, i , 100000 , 100000 , 0);
+		writegds(argv[6],rectdata, i , 100000 , 100000 , 0);
 	}
 	char str3[100];
-	ofstream gdsout ("out.gds", ios::out|ios::binary|ios::app);
+	ofstream gdsout (argv[6], ios::out|ios::binary|ios::app);
     str3[0]=Int_Conv(4, 1);
     str3[1]=Int_Conv(4, 0);
     gdsout.write(str3, 2);
