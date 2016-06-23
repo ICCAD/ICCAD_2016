@@ -174,7 +174,7 @@ int main(int argc, char **argv){
 										markers[final_clique[i][j]].centerY + markers[final_clique[i][j]].height/2));
 		}
 
-		writegds("out.gds",rectdata, i , 100000 , 100000 , 1000 );
+		writegds("out.gds",rectdata, i , 100000 , 100000 , 0);
 	}
 	char str3[100];
 	ofstream gdsout ("out.gds", ios::out|ios::binary|ios::app);
