@@ -47,6 +47,7 @@ class bron_kerbosch{
 		vector < vector <int> > maximal_clique; 
 	private:
 		vector <int> R,P,X;
+		vector <int> used;
 		vector <int> P_RAM_ID;
 		
 };

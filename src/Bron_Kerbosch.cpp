@@ -88,6 +88,7 @@ bool bron_kerbosch::Is_Duplicate(int n,vector <int> X){
 
 void bron_kerbosch::start_find_MC(vector <int> P,vector <vertex> *v){
 	vector <int> R,X;
+	used.resize(P.size(), 0);
 	find_maximal_clique(R,P,X,v);
 }
 
@@ -100,6 +101,11 @@ void bron_kerbosch::find_maximal_clique(vector <int> R,vector <int> P,vector <in
 		}
 		(*m_clique).push_back(temp);*/
 		maximal_clique.push_back(R);
+		for( int i=0;i<R.size();++i ){
+			used[R[i]] = 1;
+		}
+		
+		
 		return;
 	}
 	else{
@@ -107,10 +113,12 @@ void bron_kerbosch::find_maximal_clique(vector <int> R,vector <int> P,vector <in
 			if(!Is_Duplicate(P[i],X)){
 				vector <int> temp_R = R;
 				vector <int> temp_v;
-				temp_v.push_back(P[i]);
-				temp_R.push_back(P[i]);
-				find_maximal_clique(temp_R,Intersection_set(P,(*v)[P[i]].neightbor,v->size()),Intersection_set(X,(*v)[P[i]].neightbor,v->size()),&(*v));
-				X = Union_set(X,temp_v,v->size());
+				if(!used[P[i]]){
+					temp_v.push_back(P[i]);
+					temp_R.push_back(P[i]);
+					find_maximal_clique(temp_R,Intersection_set(P,(*v)[P[i]].neightbor,v->size()),Intersection_set(X,(*v)[P[i]].neightbor,v->size()),&(*v));
+					X = Union_set(X,temp_v,v->size());
+				}
 			}
 		}
 	}
