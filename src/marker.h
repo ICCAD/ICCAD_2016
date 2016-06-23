@@ -62,13 +62,13 @@ class marker { //Marker containing all polygon inside it
 			return result;
 		}
 		
-	private:
-		int width;	//This should be same among all 
-		int height; //This should be same among all
-		int centerX;
-		int centerY;
-		int ID;
-		vector<polygon> childPolygon;
+	
+	int width;	//This should be same among all 
+	int height; //This should be same among all
+	int centerX;
+	int centerY;
+	int ID;
+	vector<polygon> childPolygon;
 		
 };
 

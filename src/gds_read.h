@@ -10,6 +10,7 @@
 #include <cstdio>
 
 #include "data_structure.h"
+#include "marker.h"
 
 using namespace std;
 
@@ -26,7 +27,7 @@ bool comp_pointsyy(points aa, points bb);
 
 bool comp_layer(int aa, int bb);
 
-void writegds(const char *,vector<rect>,int layer, int , int , int);
+void writegds(const char *,vector<polygon>,int layer, int , int , int);
 
 
 

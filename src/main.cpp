@@ -164,8 +164,33 @@ int main(int argc, char **argv){
 		cout << endl;
 	}
 	//cout << markers.size() << " " << bk.maximal_clique.size() << endl;
-	
-	
+	vector<polygon> rectdata;
+	for( int i=0;i<final_clique.size();++i ){
+		rectdata.clear();
+		for( int j=0;j<final_clique[i].size();++j ){
+			rectdata.push_back(polygon( markers[final_clique[i][j]].centerX - markers[final_clique[i][j]].width/2,
+										markers[final_clique[i][j]].centerX + markers[final_clique[i][j]].width/2,
+										markers[final_clique[i][j]].centerY - markers[final_clique[i][j]].height/2,
+										markers[final_clique[i][j]].centerY + markers[final_clique[i][j]].height/2));
+		}
+
+		writegds("out.gds",rectdata, i , 100000 , 100000 , 1000 );
+	}
+	char str3[100];
+	ofstream gdsout ("out.gds", ios::out|ios::binary|ios::app);
+    str3[0]=Int_Conv(4, 1);
+    str3[1]=Int_Conv(4, 0);
+    gdsout.write(str3, 2);
+    str3[0]=7;
+    str3[1]=0;
+    gdsout.write(str3, 2);//ENDSTR
+    str3[0]=Int_Conv(4, 1);
+    str3[1]=Int_Conv(4, 0);
+    gdsout.write(str3, 2);
+    str3[0]=4;
+    str3[1]=0;
+    gdsout.write(str3, 2);//ENDLIB
+    gdsout.close();
 	
 	
 	return 0;
