@@ -14,10 +14,9 @@
 using namespace std;
 
 void help_message() {
-    cout << "usage: ./bin/ICCAD_2016 <input_gds_file> <constrained_method> <marker_width> <marker_height> <constrain_number>" << endl;
-	cout << "for <constrained_method>, input either ECC or ACC to decide." << endl;
+    cout << "usage: ./bin/ICCAD_2016 <input_gds_file>  <marker_width> <marker_height> <ECC constrain_number> <ACC constrain_number>" << endl;
+	//cout << "for <constrained_method>, input either ECC or ACC to decide." << endl;
 }
-
 int main(int argc, char **argv){
 	
 	if(argc != 	6) {
@@ -31,16 +30,15 @@ int main(int argc, char **argv){
 	vector< vector<rect> > rectangles(2);
 	vector < vector<bool> > CCresult;	//We store result before clustering here. 
 	int CCflag; // 0: ECC, 1: ACC 
-	
 	//User defined parameter
 	int markerHeight, markerWidth;
 	double ACCconstraint;
 	int ECCconstraint;
 	
 	//Read in parameter
-	markerWidth = atoi(argv[3]);
-	markerHeight = atoi(argv[4]);
-	if(strcmp(argv[2],"ECC") == 0){
+	markerWidth = atoi(argv[2]);
+	markerHeight = atoi(argv[3]);
+	/*if(strcmp(argv[2],"ECC") == 0){
 		CCflag = 0;
 		cout << "Choose ECC to clustering." << endl;
 		ECCconstraint = atoi(argv[5]);
@@ -55,8 +53,11 @@ int main(int argc, char **argv){
 	}else{
 		cout << "Please choose either ACC or ECC. Aborted." << endl;
 		return 0;
-	}
-		
+	}*/
+		ECCconstraint = atoi(argv[4]);
+		ACCconstraint = atof(argv[5]);
+		if (ECCconstraint == 0)
+			ECCconstraint = 1;
 	//read gds file
     converter(&gds_datas,&layer_list, argv[1]);
     sort(layer_list.begin(), layer_list.end(), comp_layer);
@@ -125,10 +126,13 @@ int main(int argc, char **argv){
 	CCresult.resize(markers.size());
 	for(int k=0; k < markers.size(); k++){
 		for(int l=0; l < markers.size(); l++){
+			CCresult[k].push_back(ACC(markers[k],markers[l],ACCconstraint)&&ECC(markers[k],markers[l],ECCconstraint)&&ECC(markers[l],markers[k],ECCconstraint));
+			/*
 			if(CCflag == 1)
 				CCresult[k].push_back(ACC(markers[k],markers[l],ACCconstraint));
 			else
 				CCresult[k].push_back(ECC(markers[k],markers[l],ECCconstraint)&&ECC(markers[l],markers[k],ECCconstraint));
+			*/
 		}
 	}
 	
@@ -146,12 +150,12 @@ int main(int argc, char **argv){
 	
 	for(int k=0; k < markers.size(); k++){
 		for(int l=0; l < markers.size(); l++){
-			cout << CCresult[k][l] << " ";
+			//cout << CCresult[k][l] << " ";
 			if(CCresult[k][l] && k != l){
 				v[k].neightbor.push_back(l);
 			}
 		}
-		cout << endl;
+		//cout << endl;
 	}
 	bk.start_find_MC(start_P, &v);
 	//bk.cout_clique();

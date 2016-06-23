@@ -30,7 +30,7 @@ bool ACC(marker A, marker B, double e){	// Perform ACC
 				rDown = B.returnPolygon(j).yDown;
 			if(rLeft < rRight && rUp > rDown){
 				Intersection+= ((rRight - rLeft)*(rUp - rDown));
-				cout << ((rRight - rLeft)*(rUp - rDown)) << endl;
+				//cout << ((rRight - rLeft)*(rUp - rDown)) << endl;
 			}
 		}
 	}
@@ -75,7 +75,7 @@ bool ECC(marker markerA,marker markerB,int constraint){	// Perform ECC
 	}
 	for(int i = 0 ; i < polygons.size(); i++){
 		for(std::list<Line>::iterator it = linesH.begin() ; it!=linesH.end(); ++it){
-			if(polygons[i].yDown < it->y0 &&  it->y0 <polygons[i].yUp){
+			if(polygons[i].yDown <= it->y0 &&  it->y0 <= polygons[i].yUp){
 				if(polygons[i].xLeft < it->x0 && polygons[i].xRight > it->x1){
 					linesH.erase(it);
 					--it;
@@ -95,7 +95,7 @@ bool ECC(marker markerA,marker markerB,int constraint){	// Perform ECC
 		}
 
 		for(std::list<Line>::iterator it = linesV.begin() ; it!=linesV.end(); ++it){
-			if(polygons[i].xLeft < it->x0 &&  it->x0 <polygons[i].xRight){
+			if(polygons[i].xLeft <= it->x0 &&  it->x0 <= polygons[i].xRight){
 				if(polygons[i].yDown < it->y0 && polygons[i].yUp > it->y1){
 					linesV.erase(it);
 					--it;

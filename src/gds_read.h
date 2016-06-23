@@ -1,6 +1,5 @@
 #ifndef __gds_read__
 #define __gds_read__
-
 #include <iostream>
 #include <fstream>
 #include <cmath>

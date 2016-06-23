@@ -1,0 +1,74 @@
+#ifndef _MARKER_H
+#define _MARKER_H
+
+#include <list>
+#include <vector>
+#include <string>
+using namespace std;
+
+
+class polygon {
+	public:
+	
+		polygon(int x0, int x1, int y0, int y1) { xLeft = x0; xRight = x1; yDown = y0; yUp = y1; }
+		int xLeft,xRight,yDown,yUp;
+		
+};
+
+class Line{
+	public:
+		
+		
+		Line(int _x0, int _y0, int _x1, int _y1) { x0 = _x0; y0 = _y0; x1 = _x1; y1 = _y1; }
+		int x0,x1,y0,y1;
+};
+
+class marker { //Marker containing all polygon inside it
+	public:
+		marker(int w, int h, int X, int Y, int I) 
+		{ 
+		width = w; height = h; centerX = X; centerY = Y; ID = I;
+		childPolygon.clear();
+		}
+		marker() { ID = 0;}
+		void insertPolygon(int x0, int x1, int y0, int y1)
+		{
+			if(x0 < (centerX-(width/2)))
+				x0 = 0;
+			else
+				x0-=(centerX-(width/2));
+			if(y0 < (centerY-(height/2)))
+				y0 = 0;
+			else
+				y0-=(centerY-(height/2));
+			if(x1 > (centerX+(width/2)))
+				x1 = width;
+			else
+				x1-=(centerX-(width/2));
+			if(y1 > (centerY+(height/2)))
+				y1 = height;
+			else
+				y1-=(centerY-(height/2));
+			childPolygon.push_back(polygon(x0,x1,y0,y1));
+		}
+		int countPolygon() { return childPolygon.size(); }
+		polygon returnPolygon(int i) { return childPolygon[i]; }
+		int areaPolygon() 
+		{
+			int result = 0;
+			for(int i = 0;i < countPolygon(); i++){
+				result+=((childPolygon[i].xRight-childPolygon[i].xLeft)*(childPolygon[i].yUp-childPolygon[i].yDown));
+			}
+			return result;
+		}
+		
+		int width;	//This should be same among all 
+		int height; //This should be same among all
+		int centerX;
+		int centerY;
+		int ID;
+		vector<polygon> childPolygon;
+		
+};
+
+#endif
